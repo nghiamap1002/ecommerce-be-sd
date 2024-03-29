@@ -26,6 +26,27 @@ class LoggerService {
     });
   };
 
+  sendToFormatCode = (logData) => {
+    const {
+      code,
+      message = "concho minhanh",
+      title = "this is example",
+    } = logData;
+
+    const codeMessage = {
+      content: message,
+      embeds: [
+        {
+          color: parseInt("00ff00", 16),
+          title,
+          description: "```json\n" + JSON.stringify(code, null, 2) + "\n```",
+        },
+      ],
+    };
+
+    this.sendToMessage(codeMessage);
+  };
+
   sendToMessage = (msg = "hello") => {
     const channel = this.client.channels.cache.get(this.channelID);
     if (!channel) {
@@ -33,10 +54,11 @@ class LoggerService {
       return;
     }
 
-    channel.send(msg).cache((e) => console.error(e));
+    channel.send(msg).catch((e) => console.error(e));
   };
 }
 
-const loggerService = new LoggerService();
+// const loggerService = new LoggerService();
 
-module.exports = loggerService;
+module.exports = new LoggerService();
+// module.exports = loggerService;
