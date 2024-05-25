@@ -2,13 +2,11 @@ const express = require("express");
 const router = express.Router();
 const { asyncHandler } = require("../../helpers/asyncHandler");
 const { authentication } = require("../../auth/authUtils");
-const checkoutController = require("../../controllers/checkout.controller");
+const commentController = require("../../controllers/comment.controller");
+const notificationController = require("../../controllers/notification.controller");
 
 router.use(authentication);
 
-router.post("/review", asyncHandler(checkoutController.checkoutReview));
-router.post("/", asyncHandler(checkoutController.checkout));
-
-// router.use(authentication);
+router.get("/", asyncHandler(notificationController.getListNotiByUser));
 
 module.exports = router;

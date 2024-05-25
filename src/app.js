@@ -2,9 +2,7 @@ const compression = require("compression");
 const express = require("express");
 const { default: helmet } = require("helmet");
 const morgan = require("morgan");
-
 const app = express();
-// console.log("processs", process.env);
 
 //init middleware
 app.use(morgan("combined"));
@@ -46,4 +44,12 @@ app.use((error, req, res, next) => {
   });
 });
 
+// const client = createClient({
+//   password: "nghiamap123",
+// });
+// client.connect();
+// client.publish("abc", "abc").then((res) => console.log(res, "res"));
+// client.publish("abc", "abc").then((res) => console.log(res, "res"));
+
+// client.on("error", (err) => console.log("Redis Client Error", err));
 module.exports = app;

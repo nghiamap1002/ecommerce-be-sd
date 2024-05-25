@@ -6,6 +6,7 @@ const {
   NotFoundError,
 } = require("../core/error.response");
 const { findByUserId } = require("../services/keyToken.services");
+const { convertToObjectIdMongo } = require("../utils");
 
 const HEADER = {
   API_KEY: "x-api-key",
@@ -67,6 +68,7 @@ const authentication = asyncHandler(async (req, res, next) => {
     req.keyStore = keyStore;
     return next();
   } catch (error) {
+    console.log(error, "error");
     throw error;
   }
 });

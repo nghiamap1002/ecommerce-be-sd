@@ -6,10 +6,6 @@ class LoggerService {
     this.token = process.env.TOKEN_DISCORD;
     this.channelID = process.env.CHANNEL_DISCORD_ID;
     this.client.on("ready", () => {
-      console.log(
-        process.env.CHANNEL_DISCORD_ID,
-        "process.env.CHANNEL_DISCORD_ID"
-      );
       console.log(`logged as ${this.client.user.tag}`);
     });
     this.client.login(this.token);

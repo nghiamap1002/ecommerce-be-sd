@@ -10,7 +10,7 @@ class InventoryService {
     location = "371 Nguyen Kiem",
   }) {
     const product = await getProductById(productId);
-    if (!product) throw new BadRequestError("Product doesn't");
+    if (!product) throw new BadRequestError("Product doesn't exist");
     const query = {
       inven_shopId: shopId,
       inven_productId: productId,

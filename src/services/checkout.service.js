@@ -1,5 +1,5 @@
 const discountController = require("../controllers/discount.controller");
-const { BadRequestError } = require("../core/error.response");
+const { BadRequestError, NotFoundError } = require("../core/error.response");
 const { orderModel } = require("../models/order.model");
 const { findCartById } = require("../models/repositories/cart.repo");
 const { checkProductByServer } = require("../models/repositories/product.repo");
@@ -7,7 +7,9 @@ const DiscountService = require("./discount.service");
 const { acquireLock, releaseLock } = require("./redis.service");
 
 class CheckoutService {
-  static async checkoutReview({ cartId, userId, shopOrderIds = [] }) {
+  static async checkoutReview(req) {
+    const { cartId, shopOrderIds = [] } = req.body;
+
     const foundCart = await findCartById(cartId);
     if (!foundCart) throw new NotFoundError("Cart doesn't exist");
 
@@ -24,7 +26,6 @@ class CheckoutService {
       const { shopId, shopDiscount = [], itemProducts = [] } = shopOrderIds[i];
       //   console.log(itemProducts, "itemProducts");
       const checkProductServer = await checkProductByServer(itemProducts);
-      console.log(checkProductServer, "checkProductServer");
       if (!checkProductServer[0])
         throw new BadRequestError("Somethings went wrong with order");
 
@@ -122,12 +123,16 @@ class CheckoutService {
 
     // if insert success, remove product fron your cart
     if (newOrder) {
+      // await orderModel.
     }
 
     return newOrder;
   }
 
-  static async;
+  static async getOrdersByUser() {}
+  static async getOneOrderByUser() {}
+  static async cancelOrderByUser() {}
+  static async updateOrderStatusByShop() {}
 }
 
 module.exports = CheckoutService;

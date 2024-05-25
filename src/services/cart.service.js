@@ -53,17 +53,11 @@ class CartService {
     });
 
     if (!userCart) {
-      var obj = {
-        Name: "GeeksforGeeks",
-        password: "gfg@1234",
-        username: "your_geeks",
-      };
-
       //   return unGetIntoData(await this.createUserCart({ userId, products }), [
       //     "__v",
       //     "cart_state",
       //   ]);
-      const a = unGetIntoData(
+      const newCart = unGetIntoData(
         await this.createUserCart({ userId, products }),
         // {
         //   _id: "64f55fc4a160420b1927556d",
@@ -81,7 +75,7 @@ class CartService {
         // },
         ["__v"]
       );
-      return a;
+      return newCart;
     }
     if (!userCart.cart_products.length) {
       userCart.cart_products = [products];

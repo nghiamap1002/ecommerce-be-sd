@@ -93,9 +93,7 @@ const queryProduct = async ({ query, limit, skip }) => {
 };
 
 const getProductById = async (productId) => {
-  return await productModel
-    .findOne({ _id: convertToObjectIdMongo(productId) })
-    .lean();
+  return await productModel.findById(productId).lean();
 };
 
 const checkProductByServer = async (products) => {

@@ -7,6 +7,8 @@ const redisClient = redis.createClient();
 
 const pexpire = promisify(redisClient.pExpire).bind(redisClient);
 const setnxAsync = promisify(redisClient.setNX).bind(redisClient);
+const client = require("./redis.client.service");
+// if order susscess throw key to another request to use (optimistic lock)
 
 const acquireLock = async ({ productId, quantity, cartId }) => {
   const key = `lock_v2023_${productId}`;
@@ -14,8 +16,9 @@ const acquireLock = async ({ productId, quantity, cartId }) => {
   const expireTime = 3000; // 3s lock
 
   for (let i = 0; i < retryTime; i++) {
+    // have to retry 10 times to order
+    // create key for payment
     const result = await setnxAsync(key, expireTime);
-    console.log(result, "result");
     const isReservation = await reservationInventory({
       cartId,
       productId,
@@ -23,7 +26,8 @@ const acquireLock = async ({ productId, quantity, cartId }) => {
     });
     if (result === 1) {
       if (isReservation.modifiedCount) {
-        await pexpire(key, expireTime);
+        // modify success this count will positive
+        await pexpire(key, expireTime); // expire this key for another user after 3 second
         return key;
       }
       return null;
